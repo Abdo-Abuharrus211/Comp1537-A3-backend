@@ -43,10 +43,6 @@ app.post('/search', async (req, res) => {
             selectionArgument = {$and:[{"weight": {$gte: req.body.minWeight }},
             {"weight": { $lte: req.body.maxWeight }}]
             }
-        } else{
-            console.log(req.body.minWeight);
-            console.log(req.body.maxWeight);
-            console.log("Can't find weight");
         }
 
         // this is a projection filter
@@ -65,12 +61,14 @@ app.post('/search', async (req, res) => {
     // This is food search
     if (req.body.type == "foodSearch") {
         const selectionArgument = {
-            loves: req.body.loves
+            "loves": { $in: [req.body.loves] } 
         }
-        if (req.body.projectionFilters.name == true && req.body.projectionFilters.weight == true && req.body.projectionFilters.loves == true) {
-            projectionArgument = { "name": 1, "loves": 1, "weight": 1, _id: 0 };
+        if (req.body.projectionFilters.name == true && req.body.projectionFilters.weight == true) {
+            projectionArgument = { "name": 1, "weight": 1, _id: 0 };
+        } else if(req.body.projectionFilters.name == true && req.body.projectionFilters.weight == false) {
+            projectionArgument = { "name": 1, _id: 0 };
         } else {
-            console.log("Can't find food");
+            projectionArgument = { "weight": 1, _id: 0 };
         }
         const result = await unicornModel.find(selectionArgument, projectionArgument);
         res.json(result)
