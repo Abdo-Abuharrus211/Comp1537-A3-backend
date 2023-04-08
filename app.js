@@ -64,8 +64,14 @@ app.post('/search', async (req, res) => {
         // const selectionArgument = {
         //     "loves": { $in: [req.body.loves] } 
         // }
-        if (req.body.loves) {
-            selectionArgument = { "loves": req.body.loves };
+
+        // Find unicorns that like apples
+        if (req.body.loves === "apple") {
+            selectionArgument = { "loves": "apple" };
+        }
+        // Find unicorns that like carrots
+        else if (req.body.loves === "carrot") {
+            selectionArgument = { "loves": "carrot" };
         }
         // Find unicorns that like both carrots and apples
         else if (req.body.loves.includes("carrot") && req.body.loves.includes("apple")) {
