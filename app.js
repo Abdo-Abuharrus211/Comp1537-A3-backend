@@ -40,6 +40,8 @@ app.post('/search', async (req, res) => {
     // This  weight search selection
     if (req.body.type == "weightSearch") {
         if (req.body.minWeight && req.body.maxWeight) {
+            console.log(req.body.minWeight);
+            console.log(req.body.maxWeight);
             selectionArgument = {
                 $and: [{ "weight": { $gte: req.body.minWeight } },
                 { "weight": { $lte: req.body.maxWeight } }]
@@ -62,7 +64,6 @@ app.post('/search', async (req, res) => {
     // This is food search
     if (req.body.type == "foodSearch") {
         const selectionArgument = {
-            name: req.body.name,
             loves: req.body.loves
         }
         if (req.body.projectionFilters.name == true && req.body.projectionFilters.weight == true && req.body.projectionFilters.loves == true) {
