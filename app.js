@@ -39,38 +39,37 @@ app.post('/search', async (req, res) => {
     if (req.body.type == "weightSearch") {
         if (req.body.minWeight && req.body.maxWeight) {
             selectionArgument = {
-                name: req.body.name,
-                weight: {$and: [{
+                $and: [{
                     "weight": { $gte: Number(req.body.maxWeight) }
                 },
                 { "weight": { $lte: Number(req.body.minWeight) } }]
             }
-        }}
-    
-    if (req.body.projectionFilters.name == false && req.body.projectionFilters.weight == true) {
-        projectionArgument = { "weight": 1, "weight": 1, _id: 0 };
-    } else {
-        console.log("Can't find weight");
+        }
+
+        if (req.body.projectionFilters.name == false && req.body.projectionFilters.weight == true) {
+            projectionArgument = { "name": 1, "weight": 1, _id: 0 };
+        } else {
+            console.log("Can't find weight");
+        }
+        const result = await unicornModel.find(selectionArgument, projectionArgument);
+        res.json(result)
     }
-    const result = await unicornModel.find(selectionArgument, projectionArgument);
-    res.json(result)
-}
 
     ////////////////////////////
     // This is food search
     if (req.body.type == "foodSearch") {
-    const selectionArgument = {
-        name: req.body.name,
-        loves: req.body.loves
+        const selectionArgument = {
+            name: req.body.name,
+            loves: req.body.loves
+        }
+        if (req.body.projectionFilters.name == true && req.body.projectionFilters.weight == false && req.body.projectionFilters.loves == true) {
+            projectionArgument = { "name": 1, "loves": 1, _id: 0 };
+        } else {
+            console.log("Can't find food");
+        }
+        const result = await unicornModel.find(selectionArgument, projectionArgument);
+        res.json(result)
     }
-    if (req.body.projectionFilters.name == true && req.body.projectionFilters.weight == false && req.body.projectionFilters.loves == true) {
-        projectionArgument = { "name": 1, "loves": 1, _id: 0 };
-    } else {
-        console.log("Can't find food");
-    }
-    const result = await unicornModel.find(selectionArgument, projectionArgument);
-    res.json(result)
-}
 
 });
 
