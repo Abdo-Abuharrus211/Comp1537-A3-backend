@@ -26,7 +26,7 @@ app.post('/search', async (req, res) => {
         // see below for how fields are included by assigning a value of 1
 
         if (req.body.projectionFilters.name == true && req.body.projectionFilters.weight == false) {
-            projectionArgument = {"name": 1, _id: 0};
+            projectionArgument = { "name": 1, _id: 0 };
         } else {
             console.log("Can't find name");
         }
@@ -37,34 +37,40 @@ app.post('/search', async (req, res) => {
     //////////////////////////// 
     // This  weight search
     if (req.body.type == "weightSearch") {
-        const selectionArgument = {
-            name: req.body.name,
-            weight: req.body.weight
-        }
-        if (req.body.projectionFilters.name == false && req.body.projectionFilters.weight == true) {
-            projectionArgument = {"weight": 1, "weight": 1, _id: 0};
-        } else {
-            console.log("Can't find weight");
-        }
-        const result = await unicornModel.find(selectionArgument, projectionArgument);
-        res.json(result)
+        if (req.body.minWeight && req.body.maxWeight) {
+            selectionArgument = {
+                name: req.body.name,
+                weight: {$and: [{
+                    "weight": { $gte: Number(req.body.maxWeight) }
+                },
+                { "weight": { $lte: Number(req.body.minWeight) } }]
+            }
+        }}
+    
+    if (req.body.projectionFilters.name == false && req.body.projectionFilters.weight == true) {
+        projectionArgument = { "weight": 1, "weight": 1, _id: 0 };
+    } else {
+        console.log("Can't find weight");
     }
+    const result = await unicornModel.find(selectionArgument, projectionArgument);
+    res.json(result)
+}
 
     ////////////////////////////
     // This is food search
     if (req.body.type == "foodSearch") {
-        const selectionArgument = {
-            name: req.body.name,
-            loves: req.body.loves
-        }
-        if (req.body.projectionFilters.name == true && req.body.projectionFilters.weight == false && req.body.projectionFilters.loves == true) {
-            projectionArgument = { "name": 1, "loves":1, _id: 0};
-        } else {
-            console.log("Can't find food");
-        }
-        const result = await unicornModel.find(selectionArgument, projectionArgument);
-        res.json(result)
+    const selectionArgument = {
+        name: req.body.name,
+        loves: req.body.loves
     }
+    if (req.body.projectionFilters.name == true && req.body.projectionFilters.weight == false && req.body.projectionFilters.loves == true) {
+        projectionArgument = { "name": 1, "loves": 1, _id: 0 };
+    } else {
+        console.log("Can't find food");
+    }
+    const result = await unicornModel.find(selectionArgument, projectionArgument);
+    res.json(result)
+}
 
 });
 
