@@ -46,12 +46,12 @@ app.post('/search', async (req, res) => {
         }
 
         // this is a projection filter
-        if (req.body.projectionFilters.name == true && req.body.projectionFilters.weight == true) {
-            projectionArgument = { "name": 1, "weight": 1, _id: 0 };
+        if (req.body.projectionFilters.name == false && req.body.projectionFilters.weight == true) {
+            projectionArgument = {"weight": 1, _id: 0 };
         } else if (req.body.projectionFilters.name == true && req.body.projectionFilters.weight == false) {
             projectionArgument = { "name": 1, _id: 0 };
         } else {
-            projectionArgument = { "weight": 1, _id: 0 };
+            projectionArgument = { "name": 1, "weight": 1, _id: 0 };
         }
         const result = await unicornModel.find(selectionArgument, projectionArgument);
         res.json(result)
@@ -63,12 +63,12 @@ app.post('/search', async (req, res) => {
         const selectionArgument = {
             "loves": { $in: [req.body.loves] } 
         }
-        if (req.body.projectionFilters.name == true && req.body.projectionFilters.weight == true) {
-            projectionArgument = { "name": 1, "weight": 1, _id: 0 };
-        } else if(req.body.projectionFilters.name == true && req.body.projectionFilters.weight == false) {
+        if (req.body.projectionFilters.name == true && req.body.projectionFilters.weight == false) {
             projectionArgument = { "name": 1, _id: 0 };
-        } else {
+        } else if(req.body.projectionFilters.name == false && req.body.projectionFilters.weight == true) {
             projectionArgument = { "weight": 1, _id: 0 };
+        } else {
+            projectionArgument = { "name": 1, "weight": 1, _id: 0 };
         }
         const result = await unicornModel.find(selectionArgument, projectionArgument);
         res.json(result)
