@@ -39,12 +39,15 @@ app.post('/search', async (req, res) => {
     //////////////////////////// 
     // This  weight search selection
     if (req.body.type == "weightSearch") {
-        // if (req.body.minWeight > 0 && req.body.maxWeight) {}
-            selectionArgument = {
-                $and: [{ "weight": { $gte: req.body.minWeight } },
-                { "weight": { $lte: req.body.maxWeight } }]
+        if (req.body.minWeight && req.body.maxWeight) {
+            selectionArgument = {$and:[{"weight": {$gte: req.body.minWeight }},
+            {"weight": { $lte: req.body.maxWeight }}]
             }
-        
+        } else{
+            console.log(req.body.minWeight);
+            console.log(req.body.maxWeight);
+            console.log("Can't find weight");
+        }
 
         // this is a projection filter
         if (req.body.projectionFilters.name == true && req.body.projectionFilters.weight == true) {
