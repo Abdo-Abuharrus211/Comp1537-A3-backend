@@ -35,7 +35,7 @@ app.post('/search', async (req, res) => {
     }
 
     //////////////////////////// 
-    // This  weight search
+    // This  weight search selection
     if (req.body.type == "weightSearch") {
         if (req.body.minWeight && req.body.maxWeight) {
             selectionArgument = {
@@ -46,7 +46,8 @@ app.post('/search', async (req, res) => {
             }
         }
 
-        if (req.body.projectionFilters.name == false && req.body.projectionFilters.weight == true) {
+        // this is a projection filter
+        if (req.body.projectionFilters.name == true && req.body.projectionFilters.weight == true) {
             projectionArgument = { "name": 1, "weight": 1, _id: 0 };
         } else {
             console.log("Can't find weight");
