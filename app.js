@@ -50,7 +50,7 @@ app.post('/search', async (req, res) => {
             projectionArgument = {"weight": 1, _id: 0 };
         } else if (req.body.projectionFilters.name == true && req.body.projectionFilters.weight == false) {
             projectionArgument = { "name": 1, _id: 0 };
-        } else {
+        } else if (req.body.projectionFilters.name == true && req.body.projectionFilters.weight == true){
             projectionArgument = { "name": 1, "weight": 1, _id: 0 };
         }
         const result = await unicornModel.find(selectionArgument, projectionArgument);
@@ -67,7 +67,7 @@ app.post('/search', async (req, res) => {
             projectionArgument = { "name": 1, _id: 0 };
         } else if(req.body.projectionFilters.name == false && req.body.projectionFilters.weight == true) {
             projectionArgument = { "weight": 1, _id: 0 };
-        } else {
+        } else if (req.body.projectionFilters.name == true && req.body.projectionFilters.weight == true){
             projectionArgument = { "name": 1, "weight": 1, _id: 0 };
         }
         const result = await unicornModel.find(selectionArgument, projectionArgument);
