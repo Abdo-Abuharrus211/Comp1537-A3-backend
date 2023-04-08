@@ -60,9 +60,22 @@ app.post('/search', async (req, res) => {
     ////////////////////////////
     // This is food search
     if (req.body.type == "foodSearch") {
-        const selectionArgument = {
-            "loves": { $in: [req.body.loves] } 
-        }
+        // const selectionArgument = {
+        //     "loves": { $in: [req.body.loves] } 
+        // }
+
+        // Find unicorns that like apples
+    if (req.body.loves === "apple") {
+        selectionArgument = { "loves": "apple" };
+    }
+    // Find unicorns that like carrots
+    else if (req.body.loves === "carrot") {
+        selectionArgument = { "loves": "carrot" };
+    }
+    // Find unicorns that like both carrots and apples
+    else if (req.body.loves.includes("carrot") && req.body.loves.includes("apple")) {
+        selectionArgument = { "loves": { $all: ["carrot", "apple"] } };
+    }
         if (req.body.projectionFilters.name == true && req.body.projectionFilters.weight == false) {
             projectionArgument = { "name": 1, _id: 0 };
         } else if(req.body.projectionFilters.name == false && req.body.projectionFilters.weight == true) {
