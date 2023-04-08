@@ -64,17 +64,11 @@ app.post('/search', async (req, res) => {
         // const selectionArgument = {
         //     "loves": { $in: [req.body.loves] } 
         // }
-
-        // Find unicorns that like apples
-        if (req.body.loves === "apple") {
-            selectionArgument = { "loves": "apple" };
-        }
-        // Find unicorns that like carrots
-        else if (req.body.loves === "carrot") {
-            selectionArgument = { "loves": "carrot" };
+        if (req.body.loves) {
+            selectionArgument = { "loves": req.body.loves };
         }
         // Find unicorns that like both carrots and apples
-        else if (req.body.loves == ["apple", "carrot"]) {
+        else if (req.body.loves.includes("carrot") && req.body.loves.includes("apple")) {
             selectionArgument = { "loves": { $all: ["carrot", "apple"] } };
         }
         if (req.body.projectionFilters.name == true && req.body.projectionFilters.weight == false) {
