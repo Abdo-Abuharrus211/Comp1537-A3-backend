@@ -41,8 +41,8 @@ app.post('/search', async (req, res) => {
     if (req.body.type == "weightSearch") {
         if (req.body.minWeight && req.body.maxWeight) {
             selectionArgument = {
-                $and: [{ "weight": { $gte: req.body.maxWeight } },
-                { "weight": { $lte: req.body.minWeight } }]
+                $and: [{ "weight": { $gte: req.body.minWeight } },
+                { "weight": { $lte: req.body.maxWeight } }]
             }
         }
 
