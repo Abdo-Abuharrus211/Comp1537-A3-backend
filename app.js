@@ -74,7 +74,7 @@ app.post('/search', async (req, res) => {
             selectionArgument = { "loves": "carrot" };
         }
         // Find unicorns that like both carrots and apples
-        else if (req.body.loves.includes("carrot") && req.body.loves.includes("apple")) {
+        else if (req.body.loves == ["apple", "carrot"]) {
             selectionArgument = { "loves": { $all: ["carrot", "apple"] } };
         }
         if (req.body.projectionFilters.name == true && req.body.projectionFilters.weight == false) {
