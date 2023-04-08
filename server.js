@@ -9,7 +9,6 @@ async function main() {
     await mongoose.connect('mongodb+srv://comp1537:mD6gk2iCuwB2lrwM@cluster0.ozsghtt.mongodb.net/unicorns?retryWrites=true&w=majority');
 }
 
-
 app.listen(3000, () => {
     console.log("Server running on port 3000")
 })
